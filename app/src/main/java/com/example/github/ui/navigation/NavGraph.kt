@@ -1,9 +1,9 @@
 package com.example.github.ui.navigation
 
-import android.widget.Toast
+import SharedViewModel
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +15,7 @@ fun SetupNavGraph(
     navController: NavHostController
 ) {
     val ctx = LocalContext.current
+    val viewModel = viewModel<SharedViewModel>()
 
     NavHost(
         navController = navController,
@@ -23,18 +24,12 @@ fun SetupNavGraph(
         composable(
             route = Screen.Search.route
         ){
-            SearchView(navController)
+            SearchView(navController, viewModel)
         }
         composable(
             route = Screen.Details.route
-        ){ navBackStackEntry ->
-            val repoId =  navBackStackEntry.arguments?.getString("repoId")
-            println("--------------------------------------------------> $repoId")
-            if (repoId == null) {
-                Toast.makeText(ctx, "Repo Id is required", Toast.LENGTH_SHORT).show()
-            } else {
-                RepoDetails(navController, repoId)
-            }
+        ){
+            RepoDetails(navController, viewModel)
         }
     }
 }
