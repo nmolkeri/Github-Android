@@ -1,11 +1,14 @@
 package com.example.github.ui.screens
 
+import AvatarImage
 import SearchViewModel
 import android.provider.CalendarContract.Colors
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,11 +22,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
+import coil.size.Scale
 import com.example.github.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,11 +46,6 @@ fun SearchView(navController: NavController) {
     println("----------------------------------------------------------------> $user")
 
     Column {
-//        TextField(
-//            value = name,
-//            onValueChange = viewModel::setName
-//        )
-        // Display the current value
         Text("Current Value: ${name.value}")
         TextField(
             value = name.value,
@@ -54,17 +57,7 @@ fun SearchView(navController: NavController) {
                 .padding(16.dp),
             label = { Text("Enter user here") }
         )
-//
-//        TextField(
-//            value = name,
-//            onValueChange = { value ->
-//                { (viewModel::setName)(value) }
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp),
-//            label = { Text("Enter your text here") }
-//        )
+
         // Button to update the value
         Button(
             onClick = {
@@ -77,6 +70,20 @@ fun SearchView(navController: NavController) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text("Fetch user details")
+        }
+
+        if (user != null) {
+            Row(modifier = Modifier.padding(start = 16.dp)) {
+                AvatarImage(avatarUrl = user.avatar_url)
+                Text(
+                    text = user.name ?: "N/A",
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    ),
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
         }
     }
 
