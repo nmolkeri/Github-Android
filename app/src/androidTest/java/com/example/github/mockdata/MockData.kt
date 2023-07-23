@@ -4,6 +4,7 @@ class MockData {
     companion object {
         fun githubUser1(): GithubUser {
             return GithubUser(
+                login = "testuser1",
                 id = 1,
                 node_id = "node1",
                 avatar_url = "https://example.com/avatar1.png",
@@ -23,6 +24,7 @@ class MockData {
 
         fun githubUser2(): GithubUser {
             return GithubUser(
+                login = "testuser2",
                 id = 2,
                 node_id = "node2",
                 avatar_url = "https://example.com/avatar2.png",
@@ -55,7 +57,8 @@ class MockData {
                     forks_count = 3,
                     archived = false,
                     license = null,
-                    forks = 0
+                    forks = 0,
+                    owner = Owner(githubUser1().name)
                 )
             )
         }
@@ -75,7 +78,8 @@ class MockData {
                     forks_count = 3,
                     archived = false,
                     license = null,
-                    forks = 0
+                    forks = 0,
+                    owner = Owner(githubUser1().name)
                 ),
                 GithubRepository(
                     id = 2,
@@ -90,7 +94,8 @@ class MockData {
                     forks_count = 5,
                     archived = false,
                     license = null,
-                    forks = 1
+                    forks = 1,
+                    owner = Owner(githubUser1().name)
                 )
             )
         }

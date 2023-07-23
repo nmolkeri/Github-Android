@@ -11,10 +11,10 @@ class MockGithubAPIEndpoints : GithubAPIEndpoints {
     }
 
     override suspend fun getUserRepositories(username: String): List<GithubRepository> {
-        if(username == MockData.githubUser1().name) {
-            return MockData.repoListWith2Element()
+        return if(username == MockData.githubUser1().login) {
+            MockData.repoListWith2Element()
         } else {
-            return emptyList()
+            emptyList()
         }
     }
 }

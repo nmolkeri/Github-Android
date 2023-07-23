@@ -25,6 +25,7 @@ data class GithubRepository(
     val archived: Boolean,
     val license: GitHubLicense?,
     val forks: Int,
+    val owner: Owner
 ){
     @SuppressLint("SimpleDateFormat")
     fun getCreatedDateAsString(): String {
@@ -46,4 +47,8 @@ data class GithubRepository(
 data class GitHubLicense(
     val key: String,
     val name: String,
+)
+
+data class Owner(
+    val login: String
 )

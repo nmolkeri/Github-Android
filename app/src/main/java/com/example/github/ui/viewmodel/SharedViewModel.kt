@@ -5,13 +5,15 @@ import com.example.github.api.GithubApiClient
 import com.example.github.api.Status
 import com.example.github.models.GithubRepository
 import com.example.github.models.GithubUser
+import com.example.githubui.api.GithubAPIEndpoints
 import com.example.githubui.api.Retrofit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SharedViewModel : ViewModel() {
-    val retrofit = Retrofit().gitHubApiService
+class SharedViewModel() : ViewModel() {
+    private val retrofit = Retrofit().gitHubApiService
+
     val user = mutableStateOf<GithubUser?>(null)
     val repoList = mutableStateOf<List<GithubRepository>>(emptyList())
     val loading = mutableStateOf(false)

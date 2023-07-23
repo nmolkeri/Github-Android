@@ -13,7 +13,7 @@ class GithubApiClientTest {
     @Test
     fun test_getRepoList_API_endpoint() = runBlocking {
         // Call the API endpoint
-        val mockUsername = "testuser"
+        val mockUsername = "testuser1"
         val resultRepos = githubApiClient.getRepoList(mockUsername)
 
         // Verify the result

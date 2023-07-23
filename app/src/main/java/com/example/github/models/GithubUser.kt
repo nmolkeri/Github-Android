@@ -1,6 +1,7 @@
 package com.example.github.models
 
 data class GithubUser(
+    val login: String,
     val id: Long,
     val node_id: String,
     val avatar_url: String,
