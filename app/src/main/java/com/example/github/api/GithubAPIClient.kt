@@ -3,6 +3,7 @@ package com.example.github.api
 import android.util.Log
 import com.example.github.models.GithubRepository
 import com.example.github.models.GithubUser
+import com.example.githubui.api.GithubAPIEndpoints
 import com.example.githubui.api.Retrofit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,38 +17,36 @@ interface  IGithubAPIClient {
     suspend fun getRepoList(name: String) : ResponseDataGithubRepos
     suspend fun getUserInfo(name: String) : ResponseDataGithubUser
 }
-    class GithubApiClient(): IGithubAPIClient {
-        var retrofit =  Retrofit.gitHubApiService
+    class GithubApiClient(private val retrofit: GithubAPIEndpoints): IGithubAPIClient {
+//        var retrofit =  Retrofit().gitHubApiService
 
         override suspend fun getRepoList(name: String): ResponseDataGithubRepos {
-            try {
-                val response = Retrofit.gitHubApiService.getUserRepositories(name)
+            return try {
+                val response =  retrofit.getUserRepositories(name)
                 if (response.isNotEmpty()) {
-                    println("SUcessssss ------------------------------------> $response")
-                    return ResponseDataGithubRepos(Status.SUCCESS, response, "")
+                    ResponseDataGithubRepos(Status.SUCCESS, response, "")
                 } else {
-                    return ResponseDataGithubRepos(Status.ERROR, emptyList(), "")
-                    Log.e("API_ERROR", "Error occured")
+                    Log.e("API_ERROR", "Error occurred")
+                    ResponseDataGithubRepos(Status.ERROR, emptyList(), "")
                 }
             } catch (ex: Throwable) {
                 Log.e("NETWORK_ERROR", ex.message ?: "Unknown error occurred")
-                return ResponseDataGithubRepos(Status.ERROR, emptyList(), "")
+                ResponseDataGithubRepos(Status.ERROR, emptyList(), "")
             }
         }
 
         override suspend fun getUserInfo(name: String): ResponseDataGithubUser {
-            try {
-                val response = Retrofit.gitHubApiService.getUserDetails(name)
+            return try {
+                val response = retrofit.getUserDetails(name)
                 if (response != null) {
-                    println("SUcessssss ------------------------------------> $response")
-                    return ResponseDataGithubUser(Status.SUCCESS, response, "")
+                    ResponseDataGithubUser(Status.SUCCESS, response, "")
                 } else {
-                    return ResponseDataGithubUser(Status.ERROR, null, "")
                     Log.e("API_ERROR", "Error")
+                    ResponseDataGithubUser(Status.ERROR, null, "")
                 }
             } catch (ex: Throwable) {
                 Log.e("NETWORK_ERROR", ex.message ?: "Unknown error occurred")
-                return ResponseDataGithubUser(Status.ERROR, null, "")
+                ResponseDataGithubUser(Status.ERROR, null, "")
             }
         }
     }

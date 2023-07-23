@@ -5,11 +5,13 @@ import com.example.github.api.GithubApiClient
 import com.example.github.api.Status
 import com.example.github.models.GithubRepository
 import com.example.github.models.GithubUser
+import com.example.githubui.api.Retrofit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SharedViewModel : ViewModel() {
+    val retrofit = Retrofit().gitHubApiService
     val user = mutableStateOf<GithubUser?>(null)
     val repoList = mutableStateOf<List<GithubRepository>>(emptyList())
     val loading = mutableStateOf(false)
@@ -39,12 +41,12 @@ class SharedViewModel : ViewModel() {
         viewModelScope.launch {
             loading.value = true
             resetData()
-            val response = GithubApiClient().getUserInfo(name.value)
+            val response = GithubApiClient(retrofit).getUserInfo(name.value)
             if (response.status == Status.SUCCESS) {
                 user.value = response.data
             }
 
-            val reposResponse = GithubApiClient().getRepoList(name.value)
+            val reposResponse = GithubApiClient(retrofit).getRepoList(name.value)
             if (reposResponse.status == Status.SUCCESS) {
                 repoList.value = reposResponse.data
                 forkCount.value = getTotalForksCount()

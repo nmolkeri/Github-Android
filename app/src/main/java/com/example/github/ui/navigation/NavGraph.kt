@@ -14,7 +14,6 @@ import com.example.github.ui.screens.SearchView
 fun SetupNavGraph(
     navController: NavHostController
 ) {
-    val ctx = LocalContext.current
     val viewModel = viewModel<SharedViewModel>()
 
     NavHost(
