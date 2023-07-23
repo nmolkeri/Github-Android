@@ -1,3 +1,5 @@
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.github.models.GithubRepository
 
 @Composable
-fun RepositoryList(repositoryList: List<GithubRepository>, onItemClick: (Long) -> Unit) {
+fun RepositoryList(repositoryList: List<GithubRepository>, onItemClick: (GithubRepository) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
@@ -27,11 +29,11 @@ fun RepositoryList(repositoryList: List<GithubRepository>, onItemClick: (Long) -
 }
 
 @Composable
-fun RepositoryItem(repository: GithubRepository, onItemClick: (Long) -> Unit) {
+fun RepositoryItem(repository: GithubRepository, onItemClick: (GithubRepository) -> Unit) {
     Column(
         modifier = Modifier.clickable {
             println("Tapped")
-            onItemClick(repository.id)
+            onItemClick(repository)
         }
     ) {
         Text(
@@ -58,7 +60,7 @@ fun RepositoryItem(repository: GithubRepository, onItemClick: (Long) -> Unit) {
                 tint = Color.Gray
             )
             Text(
-                text = repository.created_at,
+                text = repository.getCreatedDateAsString(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )

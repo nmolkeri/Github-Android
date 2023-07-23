@@ -14,48 +14,52 @@ class SharedViewModel : ViewModel() {
     val repoList = mutableStateOf<List<GithubRepository>>(emptyList())
     val loading = mutableStateOf(false)
 
-    private val _selectedId = MutableStateFlow<Long>(0)
-    var selectedId = _selectedId.asStateFlow()
+    private val _selectedRepo = MutableStateFlow<GithubRepository?>(null)
+    var selectedRepo = _selectedRepo.asStateFlow()
 
     private val _name = MutableStateFlow("")
     var name = _name.asStateFlow()
 
-//    init {
-//        getUserDetails("nmolkeri")
-//    }
-
+    val forkCount = mutableStateOf(0)
     fun setName(name: String) {
-        println("Inside set name")
         _name.value = name
-//        getUserDetails(name)
     }
 
-    fun setSelectedId(id: Long) {
-        _selectedId.value = id
+    fun setSelectedRepo(repository: GithubRepository) {
+        _selectedRepo.value = repository
     }
 
-    fun resetName() {
-        println("Inside reset name")
-        _name.value = ""
+    private fun resetData(){
+        user.value = null
+        repoList.value = emptyList()
+        _selectedRepo.value = null
+        forkCount.value = 0
     }
-
     fun getUserDetails() {
         viewModelScope.launch {
             loading.value = true
-//            Thread.sleep(3000)
-
+            resetData()
             val response = GithubApiClient().getUserInfo(name.value)
             if (response.status == Status.SUCCESS) {
-                println("-----------------------------> response is good ${response.data}")
                 user.value = response.data
             }
 
             val reposResponse = GithubApiClient().getRepoList(name.value)
             if (reposResponse.status == Status.SUCCESS) {
                 repoList.value = reposResponse.data
+                forkCount.value = getTotalForksCount()
             }
 
             loading.value = false
         }
     }
+
+    private fun getTotalForksCount(): Int {
+        var totalForksCount = 0
+        for (repo in repoList.value) {
+            totalForksCount += repo.forks_count
+        }
+        return totalForksCount
+    }
+
 }

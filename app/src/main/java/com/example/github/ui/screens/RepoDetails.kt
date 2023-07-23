@@ -1,42 +1,39 @@
 package com.example.github.ui.screens
 
+import ForksCountView
+import OvalTextSection
 import SharedViewModel
-import androidx.compose.foundation.layout.Box
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
 fun RepoDetails(navController: NavController, viewModel: SharedViewModel) {
-    var selectedID = viewModel.selectedId.collectAsState()
+    var selectedRepo = viewModel.selectedRepo.collectAsState()
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp)
     ){
-//        Text(
-//            modifier = Modifier.clickable {
-//                navController.popBackStack()
-//            },
-//            text = "This is Details view",
-//            color = Color.Blue,
-//            fontWeight = FontWeight.Bold
-
-//        )
-        Text(
-//            modifier = Modifier.clickable {
-//                navController.popBackStack()
-//            },
-            text = "Selected id is ${selectedID.value}",
-            color = Color.Blue,
-            fontWeight = FontWeight.Bold
-
-        )
+        ForksCountView(viewModel.forkCount.value)
+        OvalTextSection(text = "Name: ${selectedRepo.value?.name}")
+        OvalTextSection(text = "Description: ${selectedRepo.value?.description}")
+        OvalTextSection(text = "Full name of repo: ${selectedRepo.value?.full_name}")
+        OvalTextSection(text = "Created at ${selectedRepo.value?.getCreatedDateAsString()}")
+        OvalTextSection(text = "Updated at ${selectedRepo.value?.getUpdatedDateAsString()}")
+        OvalTextSection(text = "Forks: ${selectedRepo.value?.forks}")
+        OvalTextSection(text = "Archived: ${selectedRepo.value?.archived}")
+        OvalTextSection(text = "Stars: ${selectedRepo.value?.stargazers_count}")
+        OvalTextSection(text = "Watchers: ${selectedRepo.value?.watchers_count}")
+        if(selectedRepo.value?.license?.name != null)
+        {
+            OvalTextSection(text = "License: ${selectedRepo.value?.license?.name}")
+        }
     }
 }

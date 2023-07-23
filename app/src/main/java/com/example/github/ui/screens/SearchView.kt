@@ -3,7 +3,9 @@ package com.example.github.ui.screens
 import AvatarImage
 import RepositoryList
 import SharedViewModel
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,8 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.github.models.GithubRepository
 import com.example.github.ui.navigation.Screen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SearchView(navController: NavController, viewModel: SharedViewModel) {
@@ -49,7 +53,6 @@ fun SearchView(navController: NavController, viewModel: SharedViewModel) {
                 }
             }
     ) {
-        Text("Current Value: ${name.value}")
         TextField(
             value = name.value,
             onValueChange = { newText ->
@@ -78,18 +81,38 @@ fun SearchView(navController: NavController, viewModel: SharedViewModel) {
         if (user != null) {
             Row(modifier = Modifier.padding(start = 16.dp)) {
                 AvatarImage(avatarUrl = user.avatar_url)
-                Text(
-                    text = user.name ?: "N/A",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    ),
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+                Column() {
+                    Text(
+                        text = user.name ?: "N/A",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                    Text(
+                        text = user.company ?: "N/A",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                    Text(
+                        text = user.location ?: "N/A",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp
+                        ),
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+
+                }
+
             }
         }
-        val onItemClick: (Long) -> Unit = { id ->
-            viewModel.setSelectedId(id)
+        val onItemClick: (GithubRepository) -> Unit = { id ->
+            viewModel.setSelectedRepo(id)
             navController.navigate(Screen.Details.route)
         }
 
