@@ -1,15 +1,9 @@
 package com.example.github.models
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 data class GithubRepository(
     val id: Long,
@@ -33,7 +27,6 @@ data class GithubRepository(
         val outputFormat = "yyyy-MM-dd HH:mm:ss"
         val formatter = DateTimeFormatter.ofPattern(outputFormat).withZone(ZoneId.systemDefault())
         return formatter.format(instant)
-
     }
     @SuppressLint("SimpleDateFormat")
     fun getUpdatedDateAsString(): String {

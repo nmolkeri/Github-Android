@@ -2,7 +2,6 @@ package com.example.github.ui.navigation
 
 import SharedViewModel
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,16 +18,16 @@ fun SetupNavGraph(
     NavHost(
         navController = navController,
         startDestination = Screen.Search.route
-    ){
+    ) {
         composable(
             route = Screen.Search.route
-        ){
+        ) {
             SearchView(navController, viewModel)
         }
         composable(
             route = Screen.Details.route
-        ){
-            RepoDetails(navController, viewModel)
+        ) {
+            RepoDetails(viewModel)
         }
     }
 }

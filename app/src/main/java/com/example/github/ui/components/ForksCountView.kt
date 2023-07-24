@@ -1,9 +1,7 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,14 +27,15 @@ fun ForksCountView(totalForks: Int) {
         Icon(
             imageVector = Icons.Default.Star,
             contentDescription = "Created at",
-            tint = starColor
+            tint = starColor,
+            modifier = Modifier.size(32.dp)
         )
 
         Text(
             text = totalForks.toString(),
             color = if (totalForks > 5000) Color(0xFFFFD700) else Color.Red,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
         )
     }
 }

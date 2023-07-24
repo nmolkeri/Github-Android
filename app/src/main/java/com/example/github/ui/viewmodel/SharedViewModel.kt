@@ -5,7 +5,6 @@ import com.example.github.api.GithubApiClient
 import com.example.github.api.Status
 import com.example.github.models.GithubRepository
 import com.example.github.models.GithubUser
-import com.example.githubui.api.GithubAPIEndpoints
 import com.example.githubui.api.Retrofit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,12 +32,13 @@ class SharedViewModel() : ViewModel() {
         _selectedRepo.value = repository
     }
 
-    private fun resetData(){
+    private fun resetData() {
         user.value = null
         repoList.value = emptyList()
         _selectedRepo.value = null
         forkCount.value = 0
     }
+
     fun getUserDetails() {
         viewModelScope.launch {
             loading.value = true

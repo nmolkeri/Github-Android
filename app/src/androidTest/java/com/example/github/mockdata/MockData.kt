@@ -42,7 +42,7 @@ class MockData {
             )
         }
 
-        fun repoListWith1Element(): List<GithubRepository>{
+        fun repoListWith1Element(): List<GithubRepository> {
             return listOf(
                 GithubRepository(
                     id = 1,
@@ -80,8 +80,7 @@ class MockData {
                     license = null,
                     forks = 0,
                     owner = Owner(githubUser1().name)
-                ),
-                GithubRepository(
+                ), GithubRepository(
                     id = 2,
                     name = "repo2",
                     full_name = "user1/repo2",
