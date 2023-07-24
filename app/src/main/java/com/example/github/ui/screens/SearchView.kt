@@ -48,14 +48,13 @@ import com.example.github.ui.navigation.Screen
 import com.example.github.ui.theme.ColorPalette
 import com.example.github.ui.theme.ImageResource
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SearchView(navController: NavController, viewModel: SharedViewModel) {
     val ctx = LocalContext.current
-    var user = viewModel.user.value
-    var name = viewModel.name.collectAsState()
-    var repos = viewModel.repoList.value
+    val user = viewModel.user.value
+    val name = viewModel.name.collectAsState()
+    val repos = viewModel.repoList.value
 
     val keyboardController = LocalSoftwareKeyboardController.current
 

@@ -32,8 +32,8 @@ import com.example.github.ui.theme.ImageResource
 
 @Composable
 fun RepoDetails(viewModel: SharedViewModel) {
-    var selectedRepo = viewModel.selectedRepo.collectAsState()
-    var user = viewModel.user.value
+    val selectedRepo = viewModel.selectedRepo.collectAsState()
+    val user = viewModel.user.value
 
     Box(
         modifier = Modifier
@@ -113,7 +113,7 @@ fun RepoDetails(viewModel: SharedViewModel) {
                 )
             )
             Text(
-                text = "${selectedRepo.value?.description ?: "N/A"}", style = TextStyle(
+                text = selectedRepo.value?.description ?: "N/A", style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     color = ColorPalette.PrimaryTextColor
