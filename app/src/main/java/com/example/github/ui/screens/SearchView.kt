@@ -1,18 +1,25 @@
 package com.example.github.ui.screens
 
 import AvatarImage
+import ColorPalette
 import RepositoryList
 import SharedViewModel
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -30,6 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.github.models.GithubRepository
 import com.example.github.ui.navigation.Screen
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -42,83 +51,126 @@ fun SearchView(navController: NavController, viewModel: SharedViewModel) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .pointerInput(Unit) {
-                detectTapGestures {
-                    // Hide the keyboard when tapping anywhere else on the screen
-                    keyboardController?.hide()
-                }
-            }
+            .background(ColorPalette.BlackDark)
     ) {
-        TextField(
-            value = name.value,
-            onValueChange = { newText ->
-                run { (viewModel::setName)(newText) }
-            },
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            label = { Text("Enter user here") }
-        )
-
-        Button(
-            onClick = {
-                if(name.value == "") {
-                    Toast.makeText(ctx, "Enter name", Toast.LENGTH_SHORT).show()
-                } else {
-                    keyboardController?.hide()
-                    viewModel.getUserDetails()
+                .fillMaxSize()
+                .background(ColorPalette.BlackDark)
+                .padding(16.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        keyboardController?.hide()
+                    }
                 }
-                 },
-            modifier = Modifier.padding(16.dp)
         ) {
-            Text("Fetch user details")
-        }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField (
+                    value = name.value,
+                    onValueChange = { newText ->
+                        (viewModel::setName)(newText)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.7f)
+                        .padding(16.dp),
+                    label = { Text("Enter user here") }
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .weight(0.3f)
+                        .background(
+                            ColorPalette.ButtonColor,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable {
+                            if (name.value.isEmpty()) {
+                                Toast
+                                    .makeText(ctx, "Enter name", Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                keyboardController?.hide()
+                                viewModel.getUserDetails()
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Go",
+                        fontSize = 18.sp,
+                        color = ColorPalette.PrimaryTextColor,
+                        modifier = Modifier
+                            .padding(8.dp)
+                    )
+                }
+            }
 
-        if (user != null) {
-            Row(modifier = Modifier.padding(start = 16.dp)) {
-                AvatarImage(avatarUrl = user.avatar_url)
-                Column() {
-                    Text(
-                        text = user.name ?: "N/A",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
-                        ),
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                    Text(
-                        text = user.company ?: "N/A",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp
-                        ),
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                    Text(
-                        text = user.location ?: "N/A",
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp
-                        ),
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
+            if (user != null) {
+                Row(modifier = Modifier.padding(start = 16.dp)) {
+                    AvatarImage(avatarUrl = user.avatar_url)
+                    Column() {
+                        Text(
+                            text = user.name ?: "N/A",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 24.sp,
+                                color = ColorPalette.PrimaryTextColor
+                            ),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                        Text(
+                            text = user.company ?: "N/A",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp,
+                                color = ColorPalette.PrimaryTextColor
+                            ),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                        Text(
+                            text = user.location ?: "N/A",
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp,
+                                color = ColorPalette.PrimaryTextColor
+                            ),
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+
+                    }
 
                 }
-
             }
-        }
-        val onItemClick: (GithubRepository) -> Unit = { id ->
-            viewModel.setSelectedRepo(id)
-            navController.navigate(Screen.Details.route)
-        }
+            val onItemClick: (GithubRepository) -> Unit = { id ->
+                viewModel.setSelectedRepo(id)
+                navController.navigate(Screen.Details.route)
+            }
 
-        if(repos.isNotEmpty()) {
-            RepositoryList(repositoryList = repos, onItemClick)
+            if(repos.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = "Repositories", style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = ColorPalette.PrimaryTextColor
+                ))
+                Spacer(modifier = Modifier.height(2.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(2.dp, Color.DarkGray, shape = RoundedCornerShape(2.dp) )
+                        .padding(8.dp)
+                ) {
+                    RepositoryList(repositoryList = repos, onItemClick)
+                }
+            }
         }
     }
-
 }

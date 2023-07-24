@@ -11,8 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.github.models.GithubRepository
 
 @Composable
@@ -23,7 +26,6 @@ fun RepositoryList(repositoryList: List<GithubRepository>, onItemClick: (GithubR
     ) {
         items(repositoryList) { repository ->
             RepositoryItem(repository, onItemClick)
-            Divider(color = Color.Gray, thickness = 1.dp)
         }
     }
 }
@@ -32,38 +34,19 @@ fun RepositoryList(repositoryList: List<GithubRepository>, onItemClick: (GithubR
 fun RepositoryItem(repository: GithubRepository, onItemClick: (GithubRepository) -> Unit) {
     Column(
         modifier = Modifier.clickable {
-            println("Tapped")
             onItemClick(repository)
         }
     ) {
-        Text(
-            text = repository.name,
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black
-        )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = repository.description ?: "No description available",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
+            text = repository.full_name,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = ColorPalette.PrimaryTextColor
+            ),
+            color = ColorPalette.PrimaryTextColor
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.DateRange,
-                contentDescription = "Created at",
-                tint = Color.Gray
-            )
-            Text(
-                text = repository.getCreatedDateAsString(),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )
-        }
     }
 }

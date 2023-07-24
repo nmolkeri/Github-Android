@@ -15,10 +15,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GithubTheme {
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
-            }
         }
     }
 }
